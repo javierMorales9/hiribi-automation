@@ -1,2 +1,2 @@
 
-console.log("Que pasa");
+console.log(process.env.NODE_ENV);
