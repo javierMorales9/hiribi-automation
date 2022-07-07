@@ -1,19 +1,24 @@
-import {CoinbasePro} from 'coinbase-pro-node';
 import dotenv from "dotenv";
+import {CoinbasePro} from 'coinbase-pro-node';
 
 dotenv.config();
 
-if(!process.env.COINBASE_API_KEY) throw new Error("Incorrect api key");
-if(!process.env.COINBASE_API_SECRET) throw new Error("Incorrect api secret");
-if(!process.env.COINBASE_API_PASPHRASE) throw new Error("Incorrect api passphrase");
+const apiKey = process.env.COINBASE_API_KEY;
+const apiSecret = process.env.COINBASE_API_SECRET;
+const apiPassPhrase = process.env.COINBASE_API_PASPHRASE;
+
+if (!apiKey) throw new Error("Invalid apiKey");
+if (!apiSecret) throw new Error("Invalid apiSecret");
+if (!apiPassPhrase) throw new Error("Invalid PassPhrase");
 
 const client = new CoinbasePro({
-    apiKey: process.env.COINBASE_API_KEY,
-    apiSecret: process.env.COINBASE_API_SECRET,
-    passphrase: process.env.COINBASE_API_PASPHRASE,
-    useSandbox: true,
+  apiKey,
+  apiSecret,
+  passphrase: apiPassPhrase,
+  useSandbox: true,
 });
 
-client.rest.account.listAccounts().then(accounts => {
-  console.log(accounts);
+client.rest.account.listAccounts()
+.then(accounts => {
+console.log(accounts);
 });
