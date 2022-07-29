@@ -1,16 +1,12 @@
 
 export class Account{
-    private name: string;
+    readonly name: string;
+    readonly email: string;
+    readonly encryptedPassword: string;
 
-    constructor(name: string) {
+    constructor(name: string, email: string, password: string) {
         this.name = name;
-    }
-
-    public getName(): string {
-        return this.name;
-    }
-
-    public setName(value: string) {
-        this.name = value;
+        this.email = email;
+        this.encryptedPassword = password;
     }
 }
