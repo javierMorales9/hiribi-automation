@@ -9,7 +9,7 @@ import {logEndpointInfo} from "./shared/logging/logEndpointInfo";
 const baseRouter = Router();
 
 baseRouter.use("/", (req: Request, res: Response) => {
-    res.send("Hola amigos");
+    res.send("Hello my friends");
 });
 
 // Setup routers

@@ -3,7 +3,7 @@ import {CustomError} from "./GeneralError";
 import StatusCodes from "http-status-codes";
 import "express-async-errors";
 import { formatEuropeanDate } from "../functions";
-//import { logger } from "../logging/winstonConfig";
+import {logger} from "../logging/Logger";
 
 export const errorHandler = (
     err: Error,
@@ -17,7 +17,7 @@ export const errorHandler = (
     const status: number =
         err instanceof CustomError ? err.getHttpStatus() : StatusCodes.BAD_REQUEST;
 
-    //logger.error("returned error: " + err.message + ". Status code: " + status);
+    logger.error("returned error: " + err.message + ". Status code: " + status);
 
     res.status(status).json({
         status,
