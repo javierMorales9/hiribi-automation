@@ -1,13 +1,15 @@
 import {AccountGetInfoUseCase} from "../../../../src/account/application/AccountGetInfoUseCase";
-import {AccountRepository} from "../../../../src/account/domain/AccountRepository";
-import {MockAccountRepository} from "../MockAccountRepository";
+import {MockAccountRepository, mockAccount} from "../MockAccountRepository";
 
-const accountRepository: AccountRepository = new MockAccountRepository();
-const accountGetInfoUseCase = new AccountGetInfoUseCase(accountRepository);
+const accountGetInfoUseCase =
+    new AccountGetInfoUseCase(new MockAccountRepository());
 
 describe('get info from account use case', function () {
 
-    it('should return the info from the account', function () {
-        accountGetInfoUseCase.get();
+    it('should return the info from the account', async function () {
+        const actualAccount = await accountGetInfoUseCase.get("id");
+        const expectedAccount = mockAccount;
+
+        expect(actualAccount).toEqual(expectedAccount);
     });
 });
