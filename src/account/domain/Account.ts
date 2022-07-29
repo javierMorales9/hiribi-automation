@@ -1,3 +1,4 @@
+import {AccountRequest} from "./AccountRequest";
 
 export class Account{
     readonly name: string;
@@ -9,4 +10,13 @@ export class Account{
         this.email = email;
         this.encryptedPassword = password;
     }
+
+    public static fromAccountRequest(accountRequest: AccountRequest){
+        return new Account(
+            accountRequest.name,
+            accountRequest.email,
+            accountRequest.password
+        );
+    }
+
 }

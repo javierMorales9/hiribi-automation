@@ -1,17 +1,28 @@
 import {AccountRequest} from "../../../../src/account/domain/AccountRequest";
 import {AccountCreationUseCase} from "../../../../src/account/application/AccountCreationUseCase";
+import {AccountRepository} from "../../../../src/account/domain/AccountRepository";
+import {MockAccountRepository} from "../MockAccountRepository";
+import {Account} from "../../../../src/account/domain/Account";
 
-const accountCreationUseCase: AccountCreationUseCase = new AccountCreationUseCase();
+const accountRepository: AccountRepository = new MockAccountRepository();
+const accountCreationUseCase = new AccountCreationUseCase(accountRepository);
 
 describe("Account Creation Use case", () =>{
 
-    it('should create the account', function () {
+    it('should create the account', async function () {
         const accountRequest: AccountRequest = {
             name: "Javi",
-            email: "javi@gmail.com"
+            email: "javi@gmail.com",
+            password: "mermelada"
         }
-        accountCreationUseCase.create(accountRequest);
+        await accountCreationUseCase.create(accountRequest);
+        const actualAccount = await accountRepository.get("id");
+        const expectedAccount = Account.fromAccountRequest(accountRequest);
 
-        expect(true).toBe(true);
+        expect(actualAccount).toEqual(expectedAccount);
+    });
+
+    it('should the password be encrypted', function () {
+        expect(1).toBe(2);
     });
 })
