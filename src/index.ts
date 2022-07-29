@@ -1,24 +1,15 @@
-import dotenv from "dotenv";
-import {CoinbasePro} from 'coinbase-pro-node';
+//import "./shared/setEnv"; // Must be the first import
+import server from "./server";
+//import { logger } from "./shared/logging/winstonConfig";
 
-dotenv.config();
+// Constants
+const serverStartMsg = "Express server started on port: ";
+const port = process.env.PORT || 3000;
 
-const apiKey = process.env.COINBASE_API_KEY;
-const apiSecret = process.env.COINBASE_API_SECRET;
-const apiPassPhrase = process.env.COINBASE_API_PASPHRASE;
+// Start server
+const runningServer = server.listen(port, () =>
+    console.log()
+    //logger.info(serverStartMsg + port)
+);
 
-if (!apiKey) throw new Error("Invalid apiKey");
-if (!apiSecret) throw new Error("Invalid apiSecret");
-if (!apiPassPhrase) throw new Error("Invalid PassPhrase");
-
-const client = new CoinbasePro({
-  apiKey,
-  apiSecret,
-  passphrase: apiPassPhrase,
-  useSandbox: true,
-});
-
-client.rest.account.listAccounts()
-.then(accounts => {
-console.log(accounts);
-});
+export default runningServer;
