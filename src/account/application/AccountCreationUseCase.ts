@@ -12,7 +12,7 @@ export class AccountCreationUseCase{
 
     public async create(accountRequest: AccountRequest): Promise<void> {
 
-        const account = Account.fromAccountRequest(accountRequest);
+        const account = await Account.fromAccountRequest(accountRequest);
         await this.accountRepository.create(account);
     }
 }
