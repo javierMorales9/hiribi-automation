@@ -1,10 +1,12 @@
 import {Router, Request, Response} from "express";
 import {AccountRequest} from "../domain/AccountRequest";
 import {logger} from "../../shared/logging/Logger";
+import {AccountCreationUseCase} from "../application/AccountCreationUseCase";
 
 class AccountController {
 
     private router: Router = Router();
+    private accountCreationUseCase: AccountCreationUseCase = new AccountCreationUseCase();
 
     constructor() {
         this.router.get("/", this.getHello);
@@ -19,8 +21,11 @@ class AccountController {
         res.send("Hello this is the account endpoint");
     }
 
-    private createAccount(req: Request, res: Response){
+    private async createAccount(req: Request, res: Response){
         const accountRequest: AccountRequest = new AccountRequest(req.body);
+
+        await this.accountCreationUseCase.create(accountRequest);
+
         res.send(accountRequest);
     }
 }
