@@ -1,4 +1,6 @@
 import {Router, Request, Response} from "express";
+import {AccountRequest} from "../domain/AccountRequest";
+import {logger} from "../../shared/logging/Logger";
 
 class AccountController {
 
@@ -6,6 +8,7 @@ class AccountController {
 
     constructor() {
         this.router.get("/", this.getHello);
+        this.router.post("/", this.createAccount);
     }
 
     public getRouter(){
@@ -13,7 +16,12 @@ class AccountController {
     }
 
     private getHello(req: Request, res: Response){
-        res.send("Hello my friends");
+        res.send("Hello this is the account endpoint");
+    }
+
+    private createAccount(req: Request, res: Response){
+        const accountRequest: AccountRequest = new AccountRequest(req.body);
+        res.send(accountRequest);
     }
 }
 
