@@ -1,4 +1,6 @@
-//import "./shared/setEnv"; // Must be the first import
+import dotenv from "dotenv";
+dotenv.config();
+
 import server from "./server";
 import { logger } from "./shared/logging/Logger";
 

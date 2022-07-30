@@ -5,6 +5,7 @@ import {AccountCreationUseCase} from "../application/AccountCreationUseCase";
 import {AccountRepository} from "../domain/AccountRepository";
 import {InMemoryAccountRepository} from "./InMemoryAccountRepository";
 import {AccountGetInfoUseCase} from "../application/AccountGetInfoUseCase";
+import {issueJWT} from "../../shared/security/securityUtils";
 
 class AccountController {
 
@@ -41,7 +42,13 @@ class AccountController {
             const accountRequest: AccountRequest = new AccountRequest(req.body);
             const savedAccount = await this.accountCreationUseCase.create(accountRequest);
 
-            res.json(savedAccount);
+            const tokenData = issueJWT(savedAccount);
+
+            res.json({
+                account: savedAccount,
+                token: tokenData.token,
+                expiresIn: tokenData.expires
+            });
         }
         catch(err){
             next(err);
