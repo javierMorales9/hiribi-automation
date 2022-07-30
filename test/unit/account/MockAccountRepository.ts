@@ -12,7 +12,7 @@ export class MockAccountRepository implements AccountRepository{
     private account: Account = mockAccount;
 
     get(id: string): Promise<Account | null> {
-        if(id === "invalidId")
+        if(id != "0")
             return Promise.resolve(null);
 
         return Promise.resolve(this.account);

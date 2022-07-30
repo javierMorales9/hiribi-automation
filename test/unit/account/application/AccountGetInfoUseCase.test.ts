@@ -7,7 +7,7 @@ const accountGetInfoUseCase =
 describe('get info from account given the id use case', function () {
 
     it('should return the info from the account', async function () {
-        const actualAccount = await accountGetInfoUseCase.get("id");
+        const actualAccount = await accountGetInfoUseCase.get("0");
         const expectedAccount = mockAccount;
 
         expect(actualAccount).toEqual(expectedAccount);
