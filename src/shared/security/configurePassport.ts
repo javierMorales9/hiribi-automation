@@ -3,11 +3,11 @@ import { PassportStatic } from "passport";
 import { transformKey } from "./transformKey";
 import {CustomError} from "../errorHandling/GeneralError";
 import {AccountGetInfoUseCase} from "../../account/application/AccountGetInfoUseCase";
-import {InMemoryAccountRepository} from "../../account/infraestructure/InMemoryAccountRepository";
+import {inMemoryAccountRepository} from "../../Dependencies";
 
 const PUB_KEY = transformKey(process.env.PUB_KEY);
 //TODO: Fix this instantiation
-const accountGetInfoUseCase = new AccountGetInfoUseCase(new InMemoryAccountRepository());
+const accountGetInfoUseCase = new AccountGetInfoUseCase(inMemoryAccountRepository);
 
 const options: StrategyOptions = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),

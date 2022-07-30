@@ -3,10 +3,11 @@ import {AccountRequest} from "../domain/AccountRequest";
 import {logger} from "../../shared/logging/Logger";
 import {AccountCreationUseCase} from "../application/AccountCreationUseCase";
 import {AccountRepository} from "../domain/AccountRepository";
-import {InMemoryAccountRepository} from "./InMemoryAccountRepository";
 import {AccountGetInfoUseCase} from "../application/AccountGetInfoUseCase";
 import {issueJWT, validApiKey} from "../../shared/security/securityUtils";
 import {LoginData} from "../domain/LoginData";
+import passport from "passport";
+import {inMemoryAccountRepository} from "../../Dependencies";
 
 class AccountController {
 
@@ -15,12 +16,16 @@ class AccountController {
     private readonly accountGetInfoUseCase: AccountGetInfoUseCase;
 
     constructor() {
-        const accountRepository: AccountRepository = new InMemoryAccountRepository();
+        const accountRepository: AccountRepository = inMemoryAccountRepository;
         this.accountCreationUseCase = new AccountCreationUseCase(accountRepository);
         this.accountGetInfoUseCase = new AccountGetInfoUseCase(accountRepository);
 
         this.router = Router();
-        this.router.get("/", this.getAccount);
+        this.router.get(
+            "/",
+            passport.authenticate("jwt", { session: false }),
+            this.getAccount
+        );
         this.router.post("/", this.createAccount);
         this.router.post("/login", this.logIn);
     }

@@ -9,7 +9,7 @@ export function issueJWT(account: Account) {
     const id = account.id;
     const PRIV_KEY = transformKey(process.env.PRIV_KEY);
 
-    if (!id) throw new Error("the account has no id");
+    if (!id) throw new Error("The account has no id");
 
     const expiresIn = "1d";
 
