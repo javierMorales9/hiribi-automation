@@ -5,7 +5,7 @@ import {AccountCreationUseCase} from "../application/AccountCreationUseCase";
 import {AccountRepository} from "../domain/AccountRepository";
 import {InMemoryAccountRepository} from "./InMemoryAccountRepository";
 import {AccountGetInfoUseCase} from "../application/AccountGetInfoUseCase";
-import {issueJWT} from "../../shared/security/securityUtils";
+import {issueJWT, validApiKey} from "../../shared/security/securityUtils";
 import {LoginData} from "../domain/LoginData";
 
 class AccountController {
@@ -59,7 +59,23 @@ class AccountController {
 
     private logIn = async(req: Request, res: Response, next: NextFunction) => {
         const rawLoginData = req.body;
-        const loginData = new LoginData(rawLoginData);
+        try{
+            const loginData = new LoginData(rawLoginData);
+
+            const account = await this.accountGetInfoUseCase.getAccountByName(loginData.user);
+            validApiKey(loginData.password, account.encryptedPassword);
+
+            const tokenData = issueJWT(account)
+
+            res.json({
+                account: account,
+                token: tokenData.token,
+                expiresIn: tokenData.expires
+            });
+        }
+        catch(err){
+            next(err);
+        }
     }
 }
 

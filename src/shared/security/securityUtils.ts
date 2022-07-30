@@ -1,6 +1,8 @@
 import {Account} from "../../account/domain/Account";
 import jsonwebtoken from "jsonwebtoken";
 import {transformKey} from "./transformKey";
+import bcrypt from "bcrypt";
+import {IncorrectPasswordError} from "./IncorrectPasswordError";
 
 export function issueJWT(account: Account) {
     //here we should use the privateKey instead.
@@ -25,4 +27,11 @@ export function issueJWT(account: Account) {
         token: "Bearer " + signedToken,
         expires: expiresIn,
     };
+}
+
+export function validApiKey(receivedPassword: string, encryptedPassword: string) {
+    const isCorrect = bcrypt.compareSync(receivedPassword, encryptedPassword);
+
+    if(!isCorrect)
+        throw new IncorrectPasswordError();
 }
