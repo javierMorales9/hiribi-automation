@@ -1,16 +1,20 @@
+import "reflect-metadata";
 import dotenv from "dotenv";
 dotenv.config();
 
-import server from "./server";
-import { logger } from "./shared/logging/Logger";
+import Server from "./server";
+import {container, inject, injectable, Lifecycle, registry} from "tsyringe";
+import {InMemoryAccountRepository} from "./account/infraestructure/InMemoryAccountRepository";
 
-// Constants
-const serverStartMsg = "Express server started on port: ";
-const port = process.env.PORT || 3000;
+@registry([
+    {token: 'AccountRepository', useClass: InMemoryAccountRepository, options:{lifecycle: Lifecycle.Singleton}}
+])
+@injectable()
+export default class Main{
+    constructor(@inject(Server)private server: Server) {
+        this.server.start();
+    }
+}
 
-// Start server
-const runningServer = server.listen(port, () =>
-    logger.info(serverStartMsg + port)
-);
-
-export default runningServer;
+const server = container.resolve(Server);
+new Main(server);

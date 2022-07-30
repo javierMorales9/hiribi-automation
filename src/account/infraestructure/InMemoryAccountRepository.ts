@@ -1,10 +1,9 @@
 import "reflect-metadata";
 import {AccountRepository} from "../domain/AccountRepository";
 import {Account} from "../domain/Account";
-import {Lifecycle, registry, singleton} from "tsyringe";
+import {singleton} from "tsyringe";
 
 @singleton()
-@registry([{token: 'AccountRepository', useClass: InMemoryAccountRepository, options:{lifecycle: Lifecycle.Singleton}}])
 export class InMemoryAccountRepository implements AccountRepository{
    private readonly accounts: Account[];
 

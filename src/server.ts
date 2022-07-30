@@ -8,60 +8,68 @@ import passport from "passport";
 
 import { errorHandler } from "./shared/errorHandling/ErrorHandler";
 import { notFound } from "./shared/errorHandling/NotFound";
+import {inject, singleton} from "tsyringe";
 import {PassportConfigurator} from "./shared/security/configurePassport";
-import {container} from "tsyringe";
 import BaseController from "./api";
+import {logger} from "./shared/logging/Logger";
 
-// Constants
-const app = express();
+@singleton()
+export default class Server {
+    private serverStartMsg = "Express server started on port: ";
+    private port = process.env.PORT || 3000;
+    private app = express();
 
+    constructor(
+        @inject(PassportConfigurator)private passportConfigurator: PassportConfigurator,
+        @inject(BaseController)private baseController: BaseController
+    ) {}
 
-/***********************************************************************************
- *                                  Middlewares
- **********************************************************************************/
+    public start(){
+        this.setUpMiddlewares();
+        this.configurePassport();
+        this.setUpRoutes();
+        this.setApiRoutes();
+        this.initializeDbConnection();
 
-// Common middlewares
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
+        this.listen();
+    }
 
-/***********************************************************************************
- *                               Configure Passport
- **********************************************************************************/
-const passportConfigurator = container.resolve(PassportConfigurator);
-passportConfigurator.configurePassport(passport);
-app.use(passport.initialize());
+    private listen(){
+       this.app.listen(
+           this.port,
+           () => logger.info(this.serverStartMsg + this.port)
+       )
+    }
 
+    private setUpMiddlewares(){
+        this.app.use(express.json());
+        this.app.use(express.urlencoded({ extended: true }));
+        this.app.use(cookieParser());
+    }
 
-/***********************************************************************************
- *                               Configure Routes
- **********************************************************************************/
-// Show routes called in console during development
-if (process.env.NODE_ENV === "development") {
-    app.use(morgan("dev"));
+    private configurePassport(){
+        this.passportConfigurator.configurePassport(passport);
+        this.app.use(passport.initialize());
+    }
+
+    private setUpRoutes(){
+        if (process.env.NODE_ENV === "development") {
+            this.app.use(morgan("dev"));
+        }
+
+        if (process.env.NODE_ENV === "production") {
+            this.app.use(helmet());
+        }
+    }
+
+    private setApiRoutes(){
+        this.app.use("/", this.baseController.router);
+
+        this.app.use(errorHandler);
+        this.app.use(notFound);
+    }
+
+    private initializeDbConnection(){
+
+    }
 }
-
-// Security (helmet recommended in express docs)
-if (process.env.NODE_ENV === "production") {
-    app.use(helmet());
-}
-
-/***********************************************************************************
- *                         API routes and error handling
- **********************************************************************************/
-
-// Add api router
-const baseController = container.resolve(BaseController);
-app.use("/", baseController.router);
-
-// Error handling
-app.use(errorHandler);
-
-//Resource not found
-app.use(notFound);
-
-//Initialize the connection with mongoDB
-//connectDB();
-
-// Export here and start in a diff file (for testing).
-export default app;
