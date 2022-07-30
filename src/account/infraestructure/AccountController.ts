@@ -7,6 +7,7 @@ import {issueJWT, validApiKey} from "../../shared/security/securityUtils";
 import {LoginData} from "../domain/LoginData";
 import passport from "passport";
 import {inject, singleton} from "tsyringe";
+import {Account} from "../domain/Account";
 
 @singleton()
 export default class AccountController {
@@ -28,14 +29,9 @@ export default class AccountController {
         this.router.post("/login", this.logIn);
     }
 
-    private getAccount = async (req: Request, res: Response, next: NextFunction) => {
-        try{
-            const account = await this.accountGetInfoUseCase.get("0");
-            res.json(account);
-        }
-        catch(err){
-            next(err);
-        }
+    private getAccount = async (req: Request, res: Response) => {
+        const account = req.user as Account;
+        res.json(account);
     }
 
     private createAccount = async(req: Request, res: Response, next: NextFunction) => {
