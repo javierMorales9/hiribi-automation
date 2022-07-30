@@ -18,8 +18,13 @@ export class MockAccountRepository implements AccountRepository{
         return Promise.resolve(mockAccount);
     }
 
-    create(account: Account): Promise<void>{
-        this.account = account;
-        return Promise.resolve();
+    create(account: Account): Promise<Account>{
+        this.account = new Account(
+            account.name,
+            account.email,
+            account.encryptedPassword,
+            "0"
+        );
+        return Promise.resolve(this.account);
     }
 }

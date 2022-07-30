@@ -10,9 +10,11 @@ export class AccountCreationUseCase{
        this.accountRepository =  accountRepository;
     }
 
-    public async create(accountRequest: AccountRequest): Promise<void> {
+    public async create(accountRequest: AccountRequest): Promise<Account> {
 
         const account = await Account.fromAccountRequest(accountRequest);
-        await this.accountRepository.create(account);
+        const createdAccount = await this.accountRepository.create(account);
+
+        return createdAccount;
     }
 }

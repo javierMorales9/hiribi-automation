@@ -16,12 +16,13 @@ describe("Account Creation Use case", () =>{
             email: "javi@gmail.com",
             password: "mermelada"
         }
-        await accountCreationUseCase.create(accountRequest);
-        const actualAccount = await accountRepository.get("id");
+        const actualAccount = await accountCreationUseCase.create(accountRequest);
         const expectedAccount = await Account.fromAccountRequest(accountRequest);
 
         expect(actualAccount.name).toEqual(expectedAccount.name);
         expect(actualAccount.email).toEqual(expectedAccount.email);
+        expect(actualAccount.id).toBeDefined();
+        expect(actualAccount.encryptedPassword).not.toBe("");
     });
 
     it('should the password be encrypted', async function () {
@@ -30,9 +31,9 @@ describe("Account Creation Use case", () =>{
             email: "javi@gmail.com",
             password: "mermelada"
         }
-        await accountCreationUseCase.create(accountRequest);
+        const savedAccount = await accountCreationUseCase.create(accountRequest);
 
-        const actualPassword = (await accountRepository.get("id")).encryptedPassword;
+        const actualPassword = savedAccount.encryptedPassword;
         const expectedPassword = "$2a$12$fw35wloIOT1eMdJNFsaApOueMbuTFZBEOI/NOIBz38kMgAJgSqmUm";
 
         const equalPassword = bcrypt.compare(actualPassword, expectedPassword);

@@ -8,7 +8,7 @@ export class Account{
     readonly encryptedPassword: string;
 
     constructor(name?: string, email?: string, encryptedPassword?: string, id?:string) {
-        this.id = id ||"";
+        this.id = id;
         this.name = name || "";
         this.email = email || "";
         this.encryptedPassword = encryptedPassword || "";
