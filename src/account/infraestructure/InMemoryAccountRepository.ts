@@ -23,8 +23,15 @@ export class InMemoryAccountRepository implements AccountRepository{
         const numberId = parseInt(id);
 
         if(numberId !== 0 || !this.accounts[0])
-            throw new AccountNotFoundError(numberId);
+            throw new AccountNotFoundError(id, id);
 
         return Promise.resolve(this.accounts[numberId]);
+    }
+
+    getByAccountName(name: string): Promise<Account | null> {
+        if(name !== this.accounts[0].name)
+            return Promise.resolve(null);
+
+        return Promise.resolve(this.accounts[0]);
     }
 }

@@ -19,4 +19,13 @@ export class AccountGetInfoUseCase {
 
         return account;
     }
+
+    public async getAccountByName(name: string): Promise<Account> {
+        const account = await this.accountRepository.getByAccountName(name);
+
+        if(!account)
+            throw new AccountNotFoundError("name", name);
+
+        return account;
+    }
 }

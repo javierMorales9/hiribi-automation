@@ -25,12 +25,22 @@ describe('get info from account given the id use case', function () {
 
 });
 
-describe.skip('get info from account given the account name use case', function () {
-    it('should return an account given the name', function () {
+describe('get info from account given the account name use case', function () {
 
+    it('should return an account given the name', async function () {
+        const theName = "Juanito";
+        const actualAccount = await accountGetInfoUseCase.getAccountByName(theName);
+        expect(actualAccount.name).toBe(mockAccount.name);
     });
 
-    it('should throw an error if no account exist with that name', function () {
+    it('should throw an error if no account exist with that name', async function () {
+        const theName = "Pedrito";
+        expect.assertions(1);
 
+        try{
+            await accountGetInfoUseCase.getAccountByName(theName);
+        }catch(err){
+           expect(1).toBe(1);
+        }
     });
 });

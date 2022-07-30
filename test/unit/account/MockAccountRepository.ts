@@ -27,4 +27,11 @@ export class MockAccountRepository implements AccountRepository{
         );
         return Promise.resolve(this.account);
     }
+
+    getByAccountName(name: string): Promise<Account | null> {
+        if(name !== "Juanito")
+            return Promise.resolve(null);
+
+        return Promise.resolve(mockAccount);
+    }
 }
