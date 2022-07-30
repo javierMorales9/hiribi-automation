@@ -9,13 +9,13 @@ export const mockAccount = new Account(
 
 export class MockAccountRepository implements AccountRepository{
 
-    private account: Account | null = null;
+    private account: Account = mockAccount;
 
-    get(id: string): Promise<Account> {
-        if(this.account)
-            return Promise.resolve(this.account);
+    get(id: string): Promise<Account | null> {
+        if(id === "invalidId")
+            return Promise.resolve(null);
 
-        return Promise.resolve(mockAccount);
+        return Promise.resolve(this.account);
     }
 
     create(account: Account): Promise<Account>{

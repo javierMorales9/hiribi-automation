@@ -6,6 +6,7 @@ import {AccountRepository} from "../domain/AccountRepository";
 import {InMemoryAccountRepository} from "./InMemoryAccountRepository";
 import {AccountGetInfoUseCase} from "../application/AccountGetInfoUseCase";
 import {issueJWT} from "../../shared/security/securityUtils";
+import {LoginData} from "../domain/LoginData";
 
 class AccountController {
 
@@ -21,6 +22,7 @@ class AccountController {
         this.router = Router();
         this.router.get("/", this.getAccount);
         this.router.post("/", this.createAccount);
+        this.router.post("/login", this.logIn);
     }
 
     public getRouter(){
@@ -53,6 +55,11 @@ class AccountController {
         catch(err){
             next(err);
         }
+    }
+
+    private logIn = async(req: Request, res: Response, next: NextFunction) => {
+        const rawLoginData = req.body;
+        const loginData = new LoginData(rawLoginData);
     }
 }
 
