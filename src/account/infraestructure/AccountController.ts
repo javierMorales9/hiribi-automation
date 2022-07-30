@@ -8,6 +8,7 @@ import {LoginData} from "../domain/LoginData";
 import passport from "passport";
 import {inject, singleton} from "tsyringe";
 import {Account} from "../domain/Account";
+import AccountResponse from "../domain/AccountResponse";
 
 @singleton()
 export default class AccountController {
@@ -31,7 +32,7 @@ export default class AccountController {
 
     private getAccount = async (req: Request, res: Response) => {
         const account = req.user as Account;
-        res.json(account);
+        res.json(new AccountResponse(account));
     }
 
     private createAccount = async(req: Request, res: Response, next: NextFunction) => {
@@ -42,7 +43,7 @@ export default class AccountController {
             const tokenData = issueJWT(savedAccount);
 
             res.json({
-                account: savedAccount,
+                account: new AccountResponse(savedAccount),
                 token: tokenData.token,
                 expiresIn: tokenData.expires
             });
@@ -63,7 +64,7 @@ export default class AccountController {
             const tokenData = issueJWT(account)
 
             res.json({
-                account: account,
+                account: new AccountResponse(account),
                 token: tokenData.token,
                 expiresIn: tokenData.expires
             });
