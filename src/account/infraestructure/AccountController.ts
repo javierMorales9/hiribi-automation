@@ -1,14 +1,20 @@
-import {Router, Request, Response} from "express";
+import {Router, Request, Response, NextFunction} from "express";
 import {AccountRequest} from "../domain/AccountRequest";
 import {logger} from "../../shared/logging/Logger";
 import {AccountCreationUseCase} from "../application/AccountCreationUseCase";
+import {AccountRepository} from "../domain/AccountRepository";
+import {InMemoryAccountRepository} from "./InMemoryAccountRepository";
 
 class AccountController {
 
-    private router: Router = Router();
-    private accountCreationUseCase: AccountCreationUseCase = new AccountCreationUseCase();
+    private readonly router: Router;
+    private readonly accountCreationUseCase: AccountCreationUseCase;
 
     constructor() {
+        const accountRepository: AccountRepository = new InMemoryAccountRepository();
+        this.accountCreationUseCase = new AccountCreationUseCase(accountRepository);
+
+        this.router = Router();
         this.router.get("/", this.getHello);
         this.router.post("/", this.createAccount);
     }
@@ -21,12 +27,16 @@ class AccountController {
         res.send("Hello this is the account endpoint");
     }
 
-    private async createAccount(req: Request, res: Response){
-        const accountRequest: AccountRequest = new AccountRequest(req.body);
+    private createAccount = async(req: Request, res: Response, next: NextFunction) => {
+        try{
+            const accountRequest: AccountRequest = new AccountRequest(req.body);
+            await this.accountCreationUseCase.create(accountRequest);
 
-        await this.accountCreationUseCase.create(accountRequest);
-
-        res.send(accountRequest);
+            res.status(201).end();
+        }
+        catch(err){
+            next(err);
+        }
     }
 }
 
