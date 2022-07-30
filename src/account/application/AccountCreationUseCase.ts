@@ -1,14 +1,13 @@
+import "reflect-metadata";
 import {AccountRequest} from "../domain/AccountRequest";
 import {Account} from "../domain/Account";
 import {AccountRepository} from "../domain/AccountRepository";
+import {inject, singleton} from "tsyringe";
 
+@singleton()
 export class AccountCreationUseCase{
 
-    private accountRepository: AccountRepository;
-
-    constructor(accountRepository: AccountRepository) {
-       this.accountRepository =  accountRepository;
-    }
+    constructor(@inject("AccountRepository") private accountRepository: AccountRepository) {}
 
     public async create(accountRequest: AccountRequest): Promise<Account> {
 

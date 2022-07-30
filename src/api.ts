@@ -1,25 +1,25 @@
-//import "./shared/setEnv";
-import { Router, Request, Response} from "express";
-import accountController from "./account/infraestructure/AccountController";
+import {Router} from "express";
 
-//import flowRouter from "./flow/infrastructure/rest/flowRouter";
-//import accountRouter from "./account/infrastructure/rest/accountRouter";
-import passport from "passport";
+//import passport from "passport";
 import {logEndpointInfo} from "./shared/logging/logEndpointInfo";
+import AccountController from "./account/infraestructure/AccountController";
+import {inject, singleton} from "tsyringe";
 
-const baseRouter = Router();
+@singleton()
+export default class BaseController{
+    public readonly router;
 
-baseRouter.use(
-    "/account",
-    logEndpointInfo,
-    accountController
-);
+    constructor(
+        @inject(AccountController)accountController: AccountController
+    ){
+        this.router = Router();
 
-//baseRouter.use(
-//    "/flow",
-//    logEndpointInfo,
-//    passport.authenticate("jwt", { session: false }),
-//    flowRouter
-//);
+        this.router.use(
+            "/account",
+            logEndpointInfo,
+            accountController.router
+        );
+    }
+}
 
-export default baseRouter;
+//passport.authenticate("jwt", { session: false })

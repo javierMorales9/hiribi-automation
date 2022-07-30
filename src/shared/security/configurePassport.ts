@@ -1,31 +1,34 @@
+import "reflect-metadata"
 import { Strategy, StrategyOptions, ExtractJwt } from "passport-jwt";
 import { PassportStatic } from "passport";
 import { transformKey } from "./transformKey";
 import {CustomError} from "../errorHandling/GeneralError";
 import {AccountGetInfoUseCase} from "../../account/application/AccountGetInfoUseCase";
-import {inMemoryAccountRepository} from "../../Dependencies";
+import {inject, singleton} from "tsyringe";
 
-const PUB_KEY = transformKey(process.env.PUB_KEY);
-//TODO: Fix this instantiation
-const accountGetInfoUseCase = new AccountGetInfoUseCase(inMemoryAccountRepository);
+@singleton()
+export class PassportConfigurator{
 
-const options: StrategyOptions = {
-    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-    secretOrKey: PUB_KEY,
-    algorithms: ["RS256"],
-};
+    constructor(@inject(AccountGetInfoUseCase)private accountGetInfoUseCase: AccountGetInfoUseCase) {}
 
-const strategy = new Strategy(options, (payload, done) => {
-    accountGetInfoUseCase
-        .get(payload.sub as string)
-        .then((account) => {
-            if (!account) return done(null, false);
+    private PUB_KEY = transformKey(process.env.PUB_KEY);
+    private options: StrategyOptions = {
+        jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+        secretOrKey: this.PUB_KEY,
+        algorithms: ["RS256"],
+    };
+    private strategy = new Strategy(this.options, (payload, done) => {
+        this.accountGetInfoUseCase
+            .get(payload.sub as string)
+            .then((account) => {
+                if (!account) return done(null, false);
 
-            return done(null, account);
-        })
-        .catch(() => done(new CustomError("Access not allowed", 403), null));
-});
+                return done(null, account);
+            })
+            .catch(() => done(new CustomError("Access not allowed", 403), null));
+    });
 
-export default function configurePassport(passport: PassportStatic): void {
-    passport.use(strategy);
+    public configurePassport = (passport: PassportStatic): void => {
+        passport.use(this.strategy);
+    }
 }

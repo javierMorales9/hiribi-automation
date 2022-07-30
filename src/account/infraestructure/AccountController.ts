@@ -1,24 +1,22 @@
+import "reflect-metadata";
 import {Router, Request, Response, NextFunction} from "express";
 import {AccountRequest} from "../domain/AccountRequest";
-import {logger} from "../../shared/logging/Logger";
 import {AccountCreationUseCase} from "../application/AccountCreationUseCase";
-import {AccountRepository} from "../domain/AccountRepository";
 import {AccountGetInfoUseCase} from "../application/AccountGetInfoUseCase";
 import {issueJWT, validApiKey} from "../../shared/security/securityUtils";
 import {LoginData} from "../domain/LoginData";
 import passport from "passport";
-import {inMemoryAccountRepository} from "../../Dependencies";
+import {inject, singleton} from "tsyringe";
 
-class AccountController {
+@singleton()
+export default class AccountController {
 
-    private readonly router: Router;
-    private readonly accountCreationUseCase: AccountCreationUseCase;
-    private readonly accountGetInfoUseCase: AccountGetInfoUseCase;
+    public readonly router: Router;
 
-    constructor() {
-        const accountRepository: AccountRepository = inMemoryAccountRepository;
-        this.accountCreationUseCase = new AccountCreationUseCase(accountRepository);
-        this.accountGetInfoUseCase = new AccountGetInfoUseCase(accountRepository);
+    constructor(
+        @inject(AccountCreationUseCase)private accountCreationUseCase: AccountCreationUseCase,
+        @inject(AccountGetInfoUseCase)private accountGetInfoUseCase: AccountGetInfoUseCase
+    ) {
 
         this.router = Router();
         this.router.get(
@@ -28,10 +26,6 @@ class AccountController {
         );
         this.router.post("/", this.createAccount);
         this.router.post("/login", this.logIn);
-    }
-
-    public getRouter(){
-        return this.router;
     }
 
     private getAccount = async (req: Request, res: Response, next: NextFunction) => {
@@ -83,5 +77,3 @@ class AccountController {
         }
     }
 }
-
-export default (new AccountController()).getRouter();

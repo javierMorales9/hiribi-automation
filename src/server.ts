@@ -1,14 +1,16 @@
+import "reflect-metadata";
 import express from "express";
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import helmet from "helmet";
 
 import passport from "passport";
-import configurePassport from "./shared/security/configurePassport";
 
-import apiRouter from "./api";
 import { errorHandler } from "./shared/errorHandling/ErrorHandler";
 import { notFound } from "./shared/errorHandling/NotFound";
+import {PassportConfigurator} from "./shared/security/configurePassport";
+import {container} from "tsyringe";
+import BaseController from "./api";
 
 // Constants
 const app = express();
@@ -26,7 +28,8 @@ app.use(cookieParser());
 /***********************************************************************************
  *                               Configure Passport
  **********************************************************************************/
-configurePassport(passport);
+const passportConfigurator = container.resolve(PassportConfigurator);
+passportConfigurator.configurePassport(passport);
 app.use(passport.initialize());
 
 
@@ -48,7 +51,8 @@ if (process.env.NODE_ENV === "production") {
  **********************************************************************************/
 
 // Add api router
-app.use("/", apiRouter);
+const baseController = container.resolve(BaseController);
+app.use("/", baseController.router);
 
 // Error handling
 app.use(errorHandler);
