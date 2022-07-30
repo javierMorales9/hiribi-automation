@@ -20,7 +20,6 @@
   "jest": {
     "moduleFileExtensions": [
       "ts",
-      "js",
       "json"
     ],
     "rootDir": "./",
