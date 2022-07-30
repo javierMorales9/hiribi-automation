@@ -3,8 +3,8 @@ import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import helmet from "helmet";
 
-//import passport from "passport";
-//import configurePassport from "./shared/security/passport";
+import passport from "passport";
+import configurePassport from "./shared/security/configurePassport";
 
 import apiRouter from "./api";
 import { errorHandler } from "./shared/errorHandling/ErrorHandler";
@@ -26,8 +26,8 @@ app.use(cookieParser());
 /***********************************************************************************
  *                               Configure Passport
  **********************************************************************************/
-//configurePassport(passport);
-//app.use(passport.initialize());
+configurePassport(passport);
+app.use(passport.initialize());
 
 
 /***********************************************************************************
