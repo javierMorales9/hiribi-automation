@@ -2,11 +2,13 @@ import {AccountRequest} from "./AccountRequest";
 import bcrypt from "bcrypt";
 
 export class Account{
+    readonly id?: string;
     readonly name: string;
     readonly email: string;
     readonly encryptedPassword: string;
 
-    constructor(name?: string, email?: string, encryptedPassword?: string) {
+    constructor(name?: string, email?: string, encryptedPassword?: string, id?:string) {
+        this.id = id ||"";
         this.name = name || "";
         this.email = email || "";
         this.encryptedPassword = encryptedPassword || "";
