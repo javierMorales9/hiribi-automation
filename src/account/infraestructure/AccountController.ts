@@ -4,18 +4,21 @@ import {logger} from "../../shared/logging/Logger";
 import {AccountCreationUseCase} from "../application/AccountCreationUseCase";
 import {AccountRepository} from "../domain/AccountRepository";
 import {InMemoryAccountRepository} from "./InMemoryAccountRepository";
+import {AccountGetInfoUseCase} from "../application/AccountGetInfoUseCase";
 
 class AccountController {
 
     private readonly router: Router;
     private readonly accountCreationUseCase: AccountCreationUseCase;
+    private readonly accountGetInfoUseCase: AccountGetInfoUseCase;
 
     constructor() {
         const accountRepository: AccountRepository = new InMemoryAccountRepository();
         this.accountCreationUseCase = new AccountCreationUseCase(accountRepository);
+        this.accountGetInfoUseCase = new AccountGetInfoUseCase(accountRepository);
 
         this.router = Router();
-        this.router.get("/", this.getHello);
+        this.router.get("/", this.getAccount);
         this.router.post("/", this.createAccount);
     }
 
@@ -23,8 +26,14 @@ class AccountController {
         return this.router;
     }
 
-    private getHello(req: Request, res: Response){
-        res.send("Hello this is the account endpoint");
+    private getAccount = async (req: Request, res: Response, next: NextFunction) => {
+        try{
+            const account = await this.accountGetInfoUseCase.get("0");
+            res.json(account);
+        }
+        catch(err){
+            next(err);
+        }
     }
 
     private createAccount = async(req: Request, res: Response, next: NextFunction) => {
