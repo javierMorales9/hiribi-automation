@@ -39,9 +39,9 @@ class AccountController {
     private createAccount = async(req: Request, res: Response, next: NextFunction) => {
         try{
             const accountRequest: AccountRequest = new AccountRequest(req.body);
-            await this.accountCreationUseCase.create(accountRequest);
+            const savedAccount = await this.accountCreationUseCase.create(accountRequest);
 
-            res.status(201).end();
+            res.json(savedAccount);
         }
         catch(err){
             next(err);

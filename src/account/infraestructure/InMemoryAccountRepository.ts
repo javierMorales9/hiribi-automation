@@ -9,9 +9,14 @@ export class InMemoryAccountRepository implements AccountRepository{
         this.accounts = [];
     }
 
-    create(account: Account): Promise<void> {
-        this.accounts.push(account);
-        return Promise.resolve();
+    create(account: Account): Promise<Account> {
+        this.accounts[0] = new Account(
+            account.name,
+            account.email,
+            account.encryptedPassword,
+            "0"
+        );
+        return Promise.resolve(this.accounts[0]);
     }
 
     get(id: string): Promise<Account> {
