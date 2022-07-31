@@ -1,22 +1,32 @@
-import {AccountRepository} from "../../../src/account/domain/AccountRepository";
-import {Account} from "../../../src/account/domain/Account";
+import CoinbaseDataRepository from "../../../src/coinbaseData/domain/CoinbaseDataRepository";
+import CoinbaseData from "../../../src/coinbaseData/domain/CoinbaseData";
+import {CoinbaseDataRequest} from "../../../src/coinbaseData/domain/CoinbaseDataRequest";
 
-export const mockAccount = new Account(
-    "Juanito",
-    "juanito@gmail.com",
-    "mefisto",
-    "0"
+const mockCoinbaseData = new CoinbaseData(
+    "apiKey",
+    "apiSecret",
+    "apiPassPhrase",
+    "portfolioId",
 );
 
-export class MockCoinbaseAccountRepository {
+export const coinbaseDataRequest = new CoinbaseDataRequest({
+    apiKey: "apiKey",
+    apiSecret: "apiSecret",
+    apiPassPhrase: "apiPassPhrase",
+    portfolioId: "portfolioId",
+});
 
-    create(account: Account): Promise<Account>{
-        const accountCreated = new Account(
-            account.name,
-            account.email,
-            account.encryptedPassword,
+export class MockCoinbaseAccountRepository implements CoinbaseDataRepository{
+
+    create(coinbaseData: CoinbaseData): Promise<CoinbaseData>{
+        const createdCoinbaseData = new CoinbaseData(
+            coinbaseData.apiKey,
+            coinbaseData.apiSecret,
+            coinbaseData.apiPassPhrase,
+            coinbaseData.portfolioId,
             "0"
         );
-        return Promise.resolve(accountCreated);
+
+        return Promise.resolve(createdCoinbaseData);
     }
 }
