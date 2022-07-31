@@ -4,10 +4,11 @@ dotenv.config();
 
 import Server from "./server";
 import {container, inject, injectable, Lifecycle, registry} from "tsyringe";
-import {InMemoryAccountRepository} from "./account/infraestructure/InMemoryAccountRepository";
+//import {InMemoryAccountRepository} from "./account/infraestructure/InMemoryAccountRepository";
+import PostgresAccountRepository from "./account/infraestructure/PostgresAccountRepository";
 
 @registry([
-    {token: 'AccountRepository', useClass: InMemoryAccountRepository, options:{lifecycle: Lifecycle.Singleton}}
+    {token: 'AccountRepository', useClass: PostgresAccountRepository, options:{lifecycle: Lifecycle.Singleton}}
 ])
 @injectable()
 export default class Main{

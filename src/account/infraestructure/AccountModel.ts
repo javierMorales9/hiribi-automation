@@ -1,13 +1,23 @@
 import "reflect-metadata";
-import {DataTypes, Model} from "sequelize";
+import {DataTypes, Model, Sequelize} from "sequelize";
 import {container} from "tsyringe";
 import {SequelizeWrapper} from "../../shared/sequelize/SequelizeWrapper";
 
 const sequelize = container.resolve(SequelizeWrapper).sequelize;
-class AccountModel extends Model{}
+class AccountModel extends Model{
+    declare id: number;
+    declare name: string;
+    declare email: string;
+    declare encryptedPassword: string;
+}
 
 AccountModel.init(
     {
+        id:{
+            type: DataTypes.INTEGER,
+            autoIncrement: true,
+            primaryKey: true
+        },
         name: {
             type: DataTypes.STRING,
             allowNull: false

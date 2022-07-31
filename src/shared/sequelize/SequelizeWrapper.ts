@@ -10,7 +10,7 @@ export class SequelizeWrapper{
         this.sequelize = new Sequelize('postgres://'
             + process.env.POSTGRES_USER + ':'
             + process.env.POSTGRES_PASSWORD
-            +'@localhost:5432/hiribi'
+            +'@localhost:5432/hiribidev'
         );
     }
 
