@@ -1,7 +1,8 @@
 import {inject, singleton} from "tsyringe";
-import {NextFunction, Request, Response, Router} from "express";
+import {Request, Response, Router} from "express";
 import {CoinbaseDataRequest} from "../domain/CoinbaseDataRequest";
 import CoinbaseDataCreateUseCase from "../application/CoinbaseDataCreateUseCase";
+import CoinbaseDataResponse from "../domain/CoinbaseDataResponse";
 
 @singleton()
 export default class CoinbaseDataController {
@@ -20,8 +21,9 @@ export default class CoinbaseDataController {
         const coinbaseAccountRequest = new CoinbaseDataRequest(rawData);
 
         const coinbaseData = await this.coinbaseAccountCreator.create(coinbaseAccountRequest);
+        const coinbaseDataResponse = CoinbaseDataResponse.fromCoinbaseData(coinbaseData);
 
-        res.json(coinbaseData);
+        res.json(coinbaseDataResponse);
     }
 }
 
