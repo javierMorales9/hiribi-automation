@@ -5,11 +5,9 @@ dotenv.config();
 import Server from "./server";
 import {container, inject, injectable, Lifecycle, registry} from "tsyringe";
 import {InMemoryAccountRepository} from "./account/infraestructure/InMemoryAccountRepository";
-import {SequelizeWrapperDev} from "./shared/sequelize/SequelizeWrapperDev";
 
 @registry([
-    {token: 'AccountRepository', useClass: InMemoryAccountRepository, options:{lifecycle: Lifecycle.Singleton}},
-    {token: 'SequelizeWrapper', useClass: SequelizeWrapperDev, options:{lifecycle: Lifecycle.Singleton}}
+    {token: 'AccountRepository', useClass: InMemoryAccountRepository, options:{lifecycle: Lifecycle.Singleton}}
 ])
 @injectable()
 export default class Main{

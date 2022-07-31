@@ -1,10 +1,9 @@
 import "reflect-metadata";
-import {DataTypes, Model, Sequelize} from "sequelize";
-import {container, inject} from "tsyringe";
-import SequelizeWrapper from "../../shared/sequelize/SequelizeWrapper";
+import {DataTypes, Model} from "sequelize";
+import {container} from "tsyringe";
+import {SequelizeWrapper} from "../../shared/sequelize/SequelizeWrapper";
 
-const sequelizeWrapper = container.resolve<SequelizeWrapper>("SequelizeWrapper");
-const sequelize = sequelizeWrapper.sequelize;
+const sequelize = container.resolve(SequelizeWrapper).sequelize;
 class AccountModel extends Model{}
 
 AccountModel.init(

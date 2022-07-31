@@ -1,10 +1,9 @@
 import "reflect-metadata";
 import { Sequelize } from "sequelize";
 import {singleton} from "tsyringe";
-import SequelizeWrapper from "./SequelizeWrapper";
 
 @singleton()
-export class SequelizeWrapperTest implements SequelizeWrapper{
+export class SequelizeWrapper{
     public readonly sequelize: Sequelize;
 
     constructor() {
@@ -12,14 +11,14 @@ export class SequelizeWrapperTest implements SequelizeWrapper{
             'postgres://' +
             process.env.POSTGRES_USER + ':' +
             process.env.POSTGRES_PASSWORD +
-            '@localhost:5432/hiribitest'
+            '@localhost:5432/hiribi'
         );
     }
 
     public async start(){
         try{
-            await this.sequelize.sync({force: true});
             await this.sequelize.authenticate();
+            await this.sequelize.sync({alter: true});
             console.log('Connection has been established successfully.');
         }
         catch(error){
