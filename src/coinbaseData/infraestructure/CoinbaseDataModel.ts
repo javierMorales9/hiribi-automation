@@ -37,7 +37,8 @@ CoinbaseDataModel.init(
         },
     },
     {
-    sequelize
+        sequelize,
+        tableName: "coinbasedata"
     }
 )
 
