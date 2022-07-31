@@ -1,14 +1,13 @@
 import "reflect-metadata"
-import CoinbaseAccountCreateUseCase from "../../../../src/coinbaseAccount/application/CoinbaseAccountCreateUseCase";
+import CoinbaseDataCreateUseCase from "../../../../src/coinbaseData/application/CoinbaseDataCreateUseCase";
 import {container} from "tsyringe";
-import {CoinbaseAccountRequest} from "../../../../src/coinbaseAccount/domain/CoinbaseAccountRequest";
-import {AccountRequest} from "../../../../src/account/domain/AccountRequest";
+import {CoinbaseDataRequest} from "../../../../src/coinbaseData/domain/CoinbaseDataRequest";
 
-const coinbaseAccountCreator = container.resolve(CoinbaseAccountCreateUseCase);
+const coinbaseAccountCreator = container.resolve(CoinbaseDataCreateUseCase);
 
 describe("Coinbase Account creator", function(){
     it("should create a new Coinbase Account", async function(){
-        const request = new CoinbaseAccountRequest({
+        const request = new CoinbaseDataRequest({
             apiKey: "apiKey",
             apiSecret: "apiSecret",
             apiPassPhrase: "apiPassPhrase",

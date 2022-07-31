@@ -4,7 +4,7 @@ import passport from "passport";
 import {logEndpointInfo} from "./shared/logging/logEndpointInfo";
 import AccountController from "./account/infraestructure/AccountController";
 import {inject, singleton} from "tsyringe";
-import CoinbaseAccountController from "./coinbaseAccount/infraestructure/CoinbaseAccountController";
+import CoinbaseDataController from "./coinbaseData/infraestructure/CoinbaseDataController";
 
 @singleton()
 export default class BaseController{
@@ -12,7 +12,7 @@ export default class BaseController{
 
     constructor(
         @inject(AccountController)accountController: AccountController,
-        @inject(CoinbaseAccountController)coinbaseAccountController: CoinbaseAccountController
+        @inject(CoinbaseDataController)coinbaseAccountController: CoinbaseDataController
     ){
         this.router = Router();
 
@@ -23,7 +23,7 @@ export default class BaseController{
         );
 
         this.router.use(
-            "/coinbaseAccount",
+            "/coinbaseData",
             logEndpointInfo,
             passport.authenticate("jwt", { session: false }),
             coinbaseAccountController.router

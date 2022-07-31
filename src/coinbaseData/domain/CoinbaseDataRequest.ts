@@ -1,6 +1,6 @@
 import {BadAccountInformationError} from "../../account/domain/errors/BadAccountInformationError";
 
-export class CoinbaseAccountRequest{
+export class CoinbaseDataRequest {
     readonly apiKey: string;
     readonly apiSecret: string;
     readonly apiPassPhrase: string;
