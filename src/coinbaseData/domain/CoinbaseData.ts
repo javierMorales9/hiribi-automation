@@ -7,6 +7,7 @@ export default class CoinbaseData {
         readonly apiSecret: string,
         readonly apiPassPhrase: string,
         readonly portfolioId: string,
+        readonly id?: string
     ) {}
 
     public static fromRequest(request: CoinbaseDataRequest){

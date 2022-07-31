@@ -16,8 +16,9 @@ describe("Coinbase Account creator", function(){
 
         const savedCoinbaseData
             = await coinbaseAccountCreator.create(request);
-        
-        expect(savedCoinbaseData).toEqual(request);
+
+        expect(savedCoinbaseData.apiKey).toEqual(request.apiKey);
+        expect(savedCoinbaseData.id).toBeDefined();
     });
 
 });
