@@ -18,6 +18,10 @@ export default class CoinbaseDataController {
     private create = async (req: Request, res: Response) => {
         const rawData = req.body;
         const coinbaseAccountRequest = new CoinbaseDataRequest(rawData);
+
+        const coinbaseData = await this.coinbaseAccountCreator.create(coinbaseAccountRequest);
+
+        res.json(coinbaseData);
     }
 }
 
