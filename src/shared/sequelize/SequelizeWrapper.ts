@@ -17,7 +17,7 @@ export class SequelizeWrapper{
     public async start(){
         try{
             await this.sequelize.authenticate();
-            await this.sequelize.sync({ force: true })
+            await this.sequelize.sync({ alter: true })
             console.log('Connection has been established successfully.');
         }
         catch(error){
