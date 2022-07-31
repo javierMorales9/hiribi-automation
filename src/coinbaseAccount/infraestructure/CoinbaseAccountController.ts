@@ -1,5 +1,6 @@
 import {inject, singleton} from "tsyringe";
 import {NextFunction, Request, Response, Router} from "express";
+import {CoinbaseAccountRequest} from "../domain/CoinbaseAccountRequest";
 
 @singleton()
 export default class CoinbaseAccountController {
@@ -9,12 +10,13 @@ export default class CoinbaseAccountController {
     constructor(
     ) {
         this.router = Router();
-        this.router.get("/", this.getHello);
+        this.router.post("/", this.create);
         //this.router.post("/", this.createAccount);
     }
 
-    private getHello = async (req: Request, res: Response) => {
-        res.send("Hello");
+    private create = async (req: Request, res: Response) => {
+        const rawData = req.body;
+        const coinbaseAccountRequest = new CoinbaseAccountRequest(rawData);
     }
 }
 
