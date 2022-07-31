@@ -1,8 +1,8 @@
 import "reflect-metadata";
 import {AccountRepository} from "../domain/AccountRepository";
 import {Account} from "../domain/Account";
-import {AccountNotFoundError} from "../domain/errors/AccountNotFoundError";
 import {inject, singleton} from "tsyringe";
+import RecordNotFoundException from "../../shared/errorHandling/RecordNotFoundException";
 
 @singleton()
 export class AccountGetInfoUseCase {
@@ -13,7 +13,7 @@ export class AccountGetInfoUseCase {
         const account = await this.accountRepository.get(id);
 
         if(!account)
-            throw new AccountNotFoundError("id", id);
+            throw new RecordNotFoundException("Account", "id", id);
 
         return account;
     }
@@ -22,7 +22,7 @@ export class AccountGetInfoUseCase {
         const account = await this.accountRepository.getByAccountName(name);
 
         if(!account)
-            throw new AccountNotFoundError("name", name);
+            throw new RecordNotFoundException("Account", "id", name);
 
         return account;
     }

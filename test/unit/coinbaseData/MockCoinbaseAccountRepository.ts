@@ -2,11 +2,12 @@ import CoinbaseDataRepository from "../../../src/coinbaseData/domain/CoinbaseDat
 import CoinbaseData from "../../../src/coinbaseData/domain/CoinbaseData";
 import {CoinbaseDataRequest} from "../../../src/coinbaseData/domain/CoinbaseDataRequest";
 
-const mockCoinbaseData = new CoinbaseData(
+export const mockCoinbaseData = new CoinbaseData(
     "apiKey",
     "apiSecret",
     "apiPassPhrase",
     "portfolioId",
+    "0"
 );
 
 export const coinbaseDataRequest = new CoinbaseDataRequest({
@@ -17,6 +18,13 @@ export const coinbaseDataRequest = new CoinbaseDataRequest({
 });
 
 export class MockCoinbaseAccountRepository implements CoinbaseDataRepository{
+
+    get(id: string): Promise<CoinbaseData | null>{
+        if(id !== mockCoinbaseData.id)
+            return Promise.resolve(null);
+
+        return Promise.resolve(mockCoinbaseData);
+    }
 
     create(coinbaseData: CoinbaseData): Promise<CoinbaseData>{
         const createdCoinbaseData = new CoinbaseData(
