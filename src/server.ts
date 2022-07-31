@@ -12,6 +12,7 @@ import {inject, singleton} from "tsyringe";
 import {PassportConfigurator} from "./shared/security/configurePassport";
 import BaseController from "./api";
 import {logger} from "./shared/logging/Logger";
+import {Sequelize} from "sequelize";
 
 @singleton()
 export default class Server {
@@ -70,6 +71,14 @@ export default class Server {
     }
 
     private initializeDbConnection(){
+        const sequelize = new Sequelize('postgres://'
+            + process.env.POSTGRES_USER + ':'
+            + process.env.POSTGRES_PASSWORD
+            +'@localhost:5432/hiribi'
+        );
 
+        sequelize.authenticate()
+            .then( () => console.log('Connection has been established successfully.'))
+            .catch( (error) => console.error('Unable to connect to the database:', error))
     }
 }
