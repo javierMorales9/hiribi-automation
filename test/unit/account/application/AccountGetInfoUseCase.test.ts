@@ -1,8 +1,10 @@
 import {AccountGetInfoUseCase} from "../../../../src/account/application/AccountGetInfoUseCase";
-import {MockAccountRepository, mockAccount} from "../MockAccountRepository";
+import {mockAccount, MockAccountRepository} from "../MockAccountRepository";
+import {container} from "tsyringe";
+import {AccountRepository} from "../../../../src/account/domain/AccountRepository";
 
-const accountGetInfoUseCase =
-    new AccountGetInfoUseCase(new MockAccountRepository());
+container.register<AccountRepository>("AccountRepository", MockAccountRepository);
+const accountGetInfoUseCase = container.resolve(AccountGetInfoUseCase);
 
 describe('get info from account given the id use case', function () {
 

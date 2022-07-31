@@ -1,5 +1,9 @@
+import "reflect-metadata";
 import {AccountRequest} from "./AccountRequest";
 import bcrypt from "bcrypt";
+import {container} from "tsyringe";
+import {AccountRepository} from "./AccountRepository";
+import AccountNameAlreadyExistError from "./errors/AccountNameAlredyExistError";
 
 export class Account{
     readonly id?: string;
@@ -20,6 +24,8 @@ export class Account{
         const encryptedPassword =
             await this.encryptPassword(accountRequest.password)
 
+        await this.stopIfNameAlreadyExist(name)
+
         return new Account(name, email, encryptedPassword);
     }
 
@@ -27,4 +33,12 @@ export class Account{
         const BCRYPT_SALT_ROUNDS = 12;
         return await bcrypt.hash(password, BCRYPT_SALT_ROUNDS);
     }
+
+    private static async stopIfNameAlreadyExist(name: string) {
+        const accountRepository = container.resolve<AccountRepository>("AccountRepository");
+
+        if(await accountRepository.getByAccountName(name))
+            throw new AccountNameAlreadyExistError();
+    }
+
 }
