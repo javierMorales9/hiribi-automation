@@ -21,7 +21,7 @@ beforeAll(async () => {
 })
 
 afterAll(async () => {
-    await sequelizeWrapper.sequelize.close();
+    await sequelizeWrapper.close();
 })
 
 describe("Postgres account repository", () => {

@@ -2,7 +2,6 @@ import type { Config } from "@jest/types";
 import dotenv from "dotenv";
 dotenv.config();
 
-
 // Sync object
 const config: Config.InitialOptions = {
     preset: "ts-jest",
