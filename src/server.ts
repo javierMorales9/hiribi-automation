@@ -27,11 +27,11 @@ export default class Server {
     ) {}
 
     public async start(){
+        await this.initializeDbConnection();
         this.setUpMiddlewares();
         this.configurePassport();
         this.setUpRoutes();
         this.setApiRoutes();
-        await this.initializeDbConnection();
 
         this.listen();
     }

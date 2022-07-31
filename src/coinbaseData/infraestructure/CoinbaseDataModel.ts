@@ -1,6 +1,7 @@
 import {container} from "tsyringe";
 import {SequelizeWrapper} from "../../shared/sequelize/SequelizeWrapper";
 import {DataTypes, Model} from "sequelize";
+import AccountModel from "../../account/infraestructure/AccountModel";
 
 const sequelize = container.resolve(SequelizeWrapper).sequelize;
 
@@ -10,6 +11,7 @@ class CoinbaseDataModel extends Model{
     declare apiSecret: string;
     declare apiPassPhrase: string;
     declare portfolioId: string;
+    declare accountId: string;
 }
 
 CoinbaseDataModel.init(
@@ -41,5 +43,9 @@ CoinbaseDataModel.init(
         tableName: "coinbasedata"
     }
 )
+
+CoinbaseDataModel.belongsTo(AccountModel, {
+    foreignKey: 'accountId'
+});
 
 export default CoinbaseDataModel;

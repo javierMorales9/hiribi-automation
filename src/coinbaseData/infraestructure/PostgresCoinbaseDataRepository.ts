@@ -8,7 +8,8 @@ export default class PostgresCoinbaseDataRepository implements CoinbaseDataRepos
             apiKey: coinbaseData.apiKey,
             apiSecret: coinbaseData.apiSecret,
             apiPassPhrase: coinbaseData.apiPassPhrase,
-            portfolioId: coinbaseData.portfolioId
+            portfolioId: coinbaseData.portfolioId,
+            accountId: coinbaseData.accountId,
         })
 
         return this.transformToCoinbaseData(coinbaseDataModel);
@@ -32,6 +33,7 @@ export default class PostgresCoinbaseDataRepository implements CoinbaseDataRepos
             coinbaseDataModel.apiSecret,
             coinbaseDataModel.apiPassPhrase,
             coinbaseDataModel.portfolioId,
+            coinbaseDataModel.accountId,
             coinbaseDataModel.id.toString()
         );
     }

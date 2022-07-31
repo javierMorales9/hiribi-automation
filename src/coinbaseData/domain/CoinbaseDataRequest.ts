@@ -5,14 +5,16 @@ export class CoinbaseDataRequest {
     readonly apiSecret: string;
     readonly apiPassPhrase: string;
     readonly portfolioId: string;
+    readonly accountId: string;
 
     constructor(element: any){
-        if(!element.apiKey || !element.apiSecret || !element.apiPassPhrase || !element.portfolioId)
+        if(!element.apiKey || !element.apiSecret || !element.apiPassPhrase || !element.portfolioId || !element.accountId)
             throw new BadAccountInformationError();
 
         this.apiKey = element.apiKey;
         this.apiSecret = element.apiSecret;
         this.apiPassPhrase = element.apiPassPhrase;
         this.portfolioId = element.portfolioId;
+        this.accountId = element.accountId;
     }
 }

@@ -7,6 +7,7 @@ export default class CoinbaseData {
         readonly apiSecret: string,
         readonly apiPassPhrase: string,
         readonly portfolioId: string,
+        readonly accountId: string,
         readonly id?: string
     ) {}
 
@@ -15,6 +16,7 @@ export default class CoinbaseData {
             request.apiKey,
             request.apiSecret,
             request.apiPassPhrase,
+            request.accountId,
             request.portfolioId
         );
     }

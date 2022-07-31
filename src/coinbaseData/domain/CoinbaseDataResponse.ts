@@ -7,6 +7,7 @@ export default class CoinbaseDataResponse{
         readonly apiSecret: string,
         readonly apiPassPhrase: string,
         readonly portfolioId: string,
+        readonly accountId: string,
     ) {}
 
     public static fromCoinbaseData(data: CoinbaseData){
@@ -18,7 +19,8 @@ export default class CoinbaseDataResponse{
             data.apiKey,
             data.apiSecret,
             data.apiPassPhrase,
-            data.portfolioId
+            data.portfolioId,
+            data.accountId
         );
     }
 }
