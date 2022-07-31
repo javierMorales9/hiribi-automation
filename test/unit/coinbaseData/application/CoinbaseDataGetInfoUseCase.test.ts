@@ -10,10 +10,17 @@ const coinbaseDataGetter = container.resolve(CoinbaseDataGetInfoUseCase);
 
 describe("coinbase data get info use case", function(){
     it('should get the coinbase data element givent the id', async function () {
-
         const data: CoinbaseData = await coinbaseDataGetter.get("0");
 
         expect(data.id).toBeDefined();
         expect(data.apiSecret).toBe(mockCoinbaseData.apiSecret);
+    });
+
+    it('should throw an exception if there is no element with the given id', async function () {
+        expect.assertions(1);
+
+        coinbaseDataGetter.get("u2349")
+            .then( () => {})
+            .catch( () => expect(true).toBeTruthy())
     });
 });
