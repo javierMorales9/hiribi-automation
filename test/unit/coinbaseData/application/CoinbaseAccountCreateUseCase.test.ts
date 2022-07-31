@@ -14,9 +14,10 @@ describe("Coinbase Account creator", function(){
             portfolioId: "portfolioId",
         });
 
-        const savedAccount = await coinbaseAccountCreator.create(request);
-
-        expect(savedAccount).toEqual(request);
+        const savedCoinbaseData
+            = await coinbaseAccountCreator.create(request);
+        
+        expect(savedCoinbaseData).toEqual(request);
     });
 
 });
