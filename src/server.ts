@@ -26,12 +26,12 @@ export default class Server {
         @inject(SequelizeWrapper)private sequelizeWrapper: SequelizeWrapper
     ) {}
 
-    public start(){
+    public async start(){
         this.setUpMiddlewares();
         this.configurePassport();
         this.setUpRoutes();
         this.setApiRoutes();
-        this.initializeDbConnection();
+        await this.initializeDbConnection();
 
         this.listen();
     }
@@ -71,7 +71,7 @@ export default class Server {
         this.app.use(notFound);
     }
 
-    private initializeDbConnection(){
-        this.sequelizeWrapper.start();
+    private async initializeDbConnection(){
+        await this.sequelizeWrapper.start();
     }
 }
