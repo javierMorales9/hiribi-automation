@@ -4,7 +4,7 @@ import {AccountCreationUseCase} from "../../../../src/account/application/Accoun
 import bcrypt from "bcrypt";
 import {container} from "tsyringe";
 import {AccountRepository} from "../../../../src/account/domain/AccountRepository";
-import {MockAccountRepository} from "../MockAccountRepository";
+import {mockAccount, MockAccountRepository} from "../MockAccountRepository";
 
 container.register<AccountRepository>("AccountRepository", MockAccountRepository);
 const accountCreationUseCase = container.resolve(AccountCreationUseCase);
@@ -18,17 +18,28 @@ describe("Account Creation Use case", () =>{
             password: "mermelada"
         }
         const actualAccount = await accountCreationUseCase.create(accountRequest);
-        const expectedAccount = await Account.fromAccountRequest(accountRequest);
 
-        expect(actualAccount.name).toEqual(expectedAccount.name);
-        expect(actualAccount.email).toEqual(expectedAccount.email);
+        expect(actualAccount.name).toEqual(accountRequest.name);
+        expect(actualAccount.email).toEqual(accountRequest.email);
         expect(actualAccount.id).toBeDefined();
         expect(actualAccount.encryptedPassword).not.toBe("");
     });
 
-    it('should throw an exception if the name of the new account alredy existed', async function() {
-        expect(1).toBe(1);
-    })
+    it('should throw an exception if the name of the new account already existed', async function() {
+        expect.assertions(1);
+        const accountRequest: AccountRequest ={
+            name: mockAccount.name,
+            email: mockAccount.email,
+            password: "memelada"
+        }
+
+        try{
+            await accountCreationUseCase.create(accountRequest);
+        }
+        catch(err){
+            expect(1).toBe(1);
+        }
+    });
 
     it('should the password be encrypted', async function () {
         const accountRequest: AccountRequest = {

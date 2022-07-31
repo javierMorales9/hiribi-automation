@@ -36,8 +36,9 @@ export class Account{
 
     private static async stopIfNameAlreadyExist(name: string) {
         const accountRepository = container.resolve<AccountRepository>("AccountRepository");
+        const accountWithTheName = await accountRepository.getByAccountName(name);
 
-        if(await accountRepository.getByAccountName(name))
+        if(accountWithTheName)
             throw new AccountNameAlreadyExistError();
     }
 

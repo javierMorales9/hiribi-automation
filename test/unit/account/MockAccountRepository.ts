@@ -4,7 +4,8 @@ import {Account} from "../../../src/account/domain/Account";
 export const mockAccount = new Account(
     "Juanito",
     "juanito@gmail.com",
-    "mefisto"
+    "mefisto",
+    "0"
     );
 
 export class MockAccountRepository implements AccountRepository{
@@ -12,7 +13,7 @@ export class MockAccountRepository implements AccountRepository{
     private account: Account = mockAccount;
 
     get(id: string): Promise<Account | null> {
-        if(id != "0")
+        if(id != this.account.id)
             return Promise.resolve(null);
 
         return Promise.resolve(this.account);
@@ -29,9 +30,9 @@ export class MockAccountRepository implements AccountRepository{
     }
 
     getByAccountName(name: string): Promise<Account | null> {
-        if(name !== "Juanito")
+        if(name !== this.account.name)
             return Promise.resolve(null);
 
-        return Promise.resolve(mockAccount);
+        return Promise.resolve(this.account);
     }
 }
