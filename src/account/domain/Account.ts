@@ -6,17 +6,12 @@ import {AccountRepository} from "./AccountRepository";
 import AccountNameAlreadyExistError from "./errors/AccountNameAlredyExistError";
 
 export class Account{
-    readonly id?: string;
-    readonly name: string;
-    readonly email: string;
-    readonly encryptedPassword: string;
 
-    constructor(name?: string, email?: string, encryptedPassword?: string, id?:string) {
-        this.id = id;
-        this.name = name || "";
-        this.email = email || "";
-        this.encryptedPassword = encryptedPassword || "";
-    }
+    constructor(
+        readonly name: string,
+        readonly email: string,
+        readonly encryptedPassword: string,
+        readonly id?:string) {}
 
     public static async fromAccountRequest(accountRequest: AccountRequest){
         const name = accountRequest.name;
@@ -36,6 +31,7 @@ export class Account{
 
     private static async stopIfNameAlreadyExist(name: string) {
         const accountRepository = container.resolve<AccountRepository>("AccountRepository");
+
         const accountWithTheName = await accountRepository.getByAccountName(name);
 
         if(accountWithTheName)

@@ -1,5 +1,4 @@
 import {AccountRequest} from "../../../../src/account/domain/AccountRequest";
-import {Account} from "../../../../src/account/domain/Account";
 import {AccountCreationUseCase} from "../../../../src/account/application/AccountCreationUseCase";
 import bcrypt from "bcrypt";
 import {container} from "tsyringe";

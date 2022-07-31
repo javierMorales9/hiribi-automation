@@ -10,29 +10,27 @@ export const mockAccount = new Account(
 
 export class MockAccountRepository implements AccountRepository{
 
-    private account: Account = mockAccount;
-
     get(id: string): Promise<Account | null> {
-        if(id != this.account.id)
+        if(id != mockAccount.id)
             return Promise.resolve(null);
 
-        return Promise.resolve(this.account);
+        return Promise.resolve(mockAccount);
     }
 
     create(account: Account): Promise<Account>{
-        this.account = new Account(
+        const accountCreated = new Account(
             account.name,
             account.email,
             account.encryptedPassword,
             "0"
         );
-        return Promise.resolve(this.account);
+        return Promise.resolve(accountCreated);
     }
 
     getByAccountName(name: string): Promise<Account | null> {
-        if(name !== this.account.name)
+        if(name !== mockAccount.name)
             return Promise.resolve(null);
 
-        return Promise.resolve(this.account);
+        return Promise.resolve(mockAccount);
     }
 }
