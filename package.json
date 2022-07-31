@@ -7,8 +7,7 @@
     "build": "tsc",
     "start": "NODE_ENV=production node ./dist/index.js",
     "start:dev": "NODE_ENV=development nodemon",
-    "test": "jest --silent=true",
-    "test:int": "NODE_ENV=test jest --runInBand --silent=true --config ./test/integration/jest.config.ts"
+    "test": "jest --silent=true"
   },
   "nodemonConfig": {
     "watch": [

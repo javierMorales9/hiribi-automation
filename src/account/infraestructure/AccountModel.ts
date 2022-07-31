@@ -23,8 +23,8 @@ AccountModel.init(
         },
     },
     {
-        sequelize,
-        tableName: "account"
+        sequelize
     }
 );
+
 export default AccountModel;
