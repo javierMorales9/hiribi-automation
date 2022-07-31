@@ -1,4 +1,4 @@
-import {CustomError} from "../../shared/errorHandling/GeneralError";
+import {CustomError} from "../../../shared/errorHandling/GeneralError";
 
 export class IncorrectLoginDataError extends CustomError{
 

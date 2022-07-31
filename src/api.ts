@@ -1,6 +1,6 @@
 import {Router} from "express";
 
-//import passport from "passport";
+import passport from "passport";
 import {logEndpointInfo} from "./shared/logging/logEndpointInfo";
 import AccountController from "./account/infraestructure/AccountController";
 import {inject, singleton} from "tsyringe";

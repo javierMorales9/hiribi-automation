@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import {AccountRepository} from "../domain/AccountRepository";
 import {Account} from "../domain/Account";
-import {AccountNotFoundError} from "../domain/AccountNotFoundError";
+import {AccountNotFoundError} from "../domain/errors/AccountNotFoundError";
 import {inject, singleton} from "tsyringe";
 
 @singleton()

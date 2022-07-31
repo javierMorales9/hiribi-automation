@@ -1,4 +1,4 @@
-import {BadAccountInformationError} from "./BadAccountInformationError";
+import {BadAccountInformationError} from "./errors/BadAccountInformationError";
 
 export class AccountRequest{
     readonly name: string;

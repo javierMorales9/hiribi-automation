@@ -1,4 +1,4 @@
-import {IncorrectLoginDataError} from "./IncorrectLoginDataError";
+import {IncorrectLoginDataError} from "./errors/IncorrectLoginDataError";
 
 export class LoginData{
     readonly user: string;
