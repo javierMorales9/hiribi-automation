@@ -12,7 +12,7 @@ import {inject, singleton} from "tsyringe";
 import {PassportConfigurator} from "./shared/security/configurePassport";
 import BaseController from "./api";
 import {logger} from "./shared/logging/Logger";
-import {SequelizeWrapper} from "./shared/sequelize/SequelizeWrapper";
+import {SequelizeWrapperDev} from "./shared/sequelize/SequelizeWrapperDev";
 
 @singleton()
 export default class Server {
@@ -23,7 +23,7 @@ export default class Server {
     constructor(
         @inject(PassportConfigurator)private passportConfigurator: PassportConfigurator,
         @inject(BaseController)private baseController: BaseController,
-        @inject(SequelizeWrapper)private sequelizeWrapper: SequelizeWrapper
+        @inject(SequelizeWrapperDev)private sequelizeWrapper: SequelizeWrapperDev
     ) {}
 
     public async start(){

@@ -2,9 +2,9 @@ import "reflect-metadata";
 import PostgresAccountRepository from "../../../../src/account/infraestructure/PostgresAccountRepository";
 import {Account} from "../../../../src/account/domain/Account";
 import {container} from "tsyringe";
-import {SequelizeWrapper} from "../../../../src/shared/sequelize/SequelizeWrapper";
+import SequelizeWrapper from "../../../../src/shared/sequelize/SequelizeWrapper";
 
-const sequelizeWrapper = container.resolve(SequelizeWrapper);
+const sequelizeWrapper = container.resolve<SequelizeWrapper>("SequelizeWrapper");
 
 const postgresAccountRepository: PostgresAccountRepository
     = new PostgresAccountRepository();
@@ -29,4 +29,4 @@ describe("Postgres account repository", () => {
         await postgresAccountRepository.create(sampleAccount);
         expect(1).toBe(1);
     });
-})
+});
